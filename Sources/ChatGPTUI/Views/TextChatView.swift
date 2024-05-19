@@ -9,7 +9,7 @@ public struct TextChatView<CustomContent: View>: View {
     @FocusState var isTextFieldFocused: Bool
     
     public init(senderImage: String? = nil, botImage: String? = nil, apiKey: String) where CustomContent == Text {
-        self.vm = .init(apiKey: apiKey)
+        self.vm = .init(senderImage: senderImage, botImage: botImage, apiKey: apiKey)
     }
     
     public init(customContentVM: TextChatViewModel<CustomContent>) {
