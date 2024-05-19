@@ -2,7 +2,7 @@
 
 ![Alt text](https://i.ibb.co.com/QFPj8kg/Screenshot-2024-05-19-at-21-33-55.png "image")
 
-Simple, and extensible Drop-in ChatGPT UI Solution for Apple Platforms.
+Simple and extensible Drop-in ChatGPT UI Solution for Apple Platforms.
 
 ## Supported Platforms
 
