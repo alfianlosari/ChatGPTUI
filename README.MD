@@ -42,7 +42,11 @@ var body: some View {
 }
 ```
 
-Pass optional imageName from asset or remote image URL to render as sender and bot images
+Pass these optional params for customization:
+- `senderImage` and `botImage` from asset or remote image URL to render as sender and bot images.
+- `model` ChatGPTModel enum (gpt-4o, gpt-4turbo, gpt-3.5, etc)
+- `systemText` system text prompt used by ChatGPT.
+- `temperature` Temperature used by ChatGPT for response.
 
 ```swift
 var body: some View {
@@ -50,6 +54,9 @@ var body: some View {
         TextChatView(
             senderImage: senderImage,
             botImage: botImage,
+            model: .gpt_hyphen_4o,
+            systemText: "You're master of Swift Programming",
+            temperature: 1.0,
             apiKey: apiKey)
             .navigationTitle("XCA ChatGPTUI")
     }
