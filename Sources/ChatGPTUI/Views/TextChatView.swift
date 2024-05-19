@@ -8,7 +8,7 @@ public struct TextChatView<CustomContent: View>: View {
     @State var vm: TextChatViewModel<CustomContent>
     @FocusState var isTextFieldFocused: Bool
     
-    public init(apiKey: String) where CustomContent == Text {
+    public init(senderImage: String? = nil, botImage: String? = nil, apiKey: String) where CustomContent == Text {
         self.vm = .init(apiKey: apiKey)
     }
     
@@ -18,7 +18,6 @@ public struct TextChatView<CustomContent: View>: View {
     
     public var body: some View {
         chatListView
-            .navigationTitle(vm.title)
     }
     
     var chatListView: some View {

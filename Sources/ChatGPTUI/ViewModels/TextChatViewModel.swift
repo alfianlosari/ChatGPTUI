@@ -17,12 +17,10 @@ public class TextChatViewModel<CustomContent: View> {
     public var task: Task<Void, Never>?
     public var senderImage: String?
     public var botImage: String?
-    public var title: String
     
     let api: ChatGPTAPI
     
-    public init(title: String = "XCA ChatGPT UI", messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, apiKey: String) {
-        self.title = title
+    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, apiKey: String) {
         self.messages = messages
         self.senderImage = senderImage
         self.botImage = botImage
