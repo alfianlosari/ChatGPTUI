@@ -12,6 +12,7 @@ import UIKit
 public class TextChatViewModel<CustomContent: View> {
         
     public var messages: [MessageRow<CustomContent>] = []
+    
     public var inputMessage = ""
     public var isPrompting = false
     public var task: Task<Void, Never>?
@@ -19,12 +20,18 @@ public class TextChatViewModel<CustomContent: View> {
     public var botImage: String?
     
     let api: ChatGPTAPI
+    public var model: ChatGPTModel
+    public var systemText: String
+    public var temperature: Double
     
-    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, apiKey: String) {
+    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
         self.messages = messages
         self.senderImage = senderImage
         self.botImage = botImage
+        self.model = model
         self.api = ChatGPTAPI(apiKey: apiKey)
+        self.systemText = systemText
+        self.temperature = temperature
     }
     
     @MainActor
@@ -72,7 +79,7 @@ public class TextChatViewModel<CustomContent: View> {
             var currentTextCount = 0
             var currentOutput: AttributedOutput?
             
-            let stream = try await api.sendMessageStream(text: text, model: .init(rawValue: "gpt-4o") ?? .gpt_hyphen_4)
+            let stream = try await api.sendMessageStream(text: text, model: model, systemText: systemText, temperature: temperature)
             for try await text in stream {
                 streamText += text
                 currentTextCount += text.count
@@ -142,7 +149,7 @@ public class TextChatViewModel<CustomContent: View> {
         self.messages.append(messageRow)
         
         do {
-            let responseText = try await api.sendMessage(text: text, model: .init(rawValue: "gpt-4o") ?? .gpt_hyphen_4)
+            let responseText = try await api.sendMessage(text: text, model: model, systemText: systemText, temperature: temperature)
             try Task.checkCancellation()
             
             let parsingTask = ResponseParsingTask()

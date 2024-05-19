@@ -1,3 +1,4 @@
+import ChatGPTSwift
 import Foundation
 import SwiftUI
 
@@ -8,8 +9,8 @@ public struct TextChatView<CustomContent: View>: View {
     @State var vm: TextChatViewModel<CustomContent>
     @FocusState var isTextFieldFocused: Bool
     
-    public init(senderImage: String? = nil, botImage: String? = nil, apiKey: String) where CustomContent == Text {
-        self.vm = .init(senderImage: senderImage, botImage: botImage, apiKey: apiKey)
+    public init(senderImage: String? = nil, botImage: String? = nil, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) where CustomContent == Text {
+        self.vm = .init(senderImage: senderImage, botImage: botImage, model: model, systemText: systemText, temperature: temperature, apiKey: apiKey)
     }
     
     public init(customContentVM: TextChatViewModel<CustomContent>) {
