@@ -5,17 +5,28 @@ import PackageDescription
 
 let package = Package(
     name: "ChatGPTUI",
+    platforms: [
+        .iOS(.v17),
+        .macOS(.v14),
+        .visionOS(.v1)],
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "ChatGPTUI",
             targets: ["ChatGPTUI"]),
     ],
+    dependencies: [
+        .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.2.0"),
+        .package(url: "https://github.com/apple/swift-markdown.git", branch: "main"),
+        .package(url: "https://github.com/alfianlosari/HighlighterSwift.git", branch: "main")
+    ],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "ChatGPTUI"),
+            name: "ChatGPTUI",
+            dependencies: [
+                "ChatGPTSwift",
+                .product(name: "Highlighter", package: "HighlighterSwift"),
+                .product(name: "Markdown", package: "swift-markdown")
+            ]),
         .testTarget(
             name: "ChatGPTUITests",
             dependencies: ["ChatGPTUI"]),
