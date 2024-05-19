@@ -169,7 +169,7 @@ public struct MarkdownAttributedStringParser: MarkupVisitor {
         let result = NSMutableAttributedString(attributedString: highlighter.highlight(codeBlock.code, as: codeBlock.language) ?? NSAttributedString(string: codeBlock.code))
         
         if codeBlock.hasSuccessor {
-            result.append(.singleNewline(withFontSize: newLineFontSize))
+            result.append(.doubleNewline(withFontSize: newLineFontSize))
         }
     
         return result
