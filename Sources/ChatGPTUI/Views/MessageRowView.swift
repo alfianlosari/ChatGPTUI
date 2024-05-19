@@ -95,6 +95,7 @@ public struct MessageRowView<CustomContent: View>: View {
             ForEach(results) { parsed in
                 if parsed.isCodeBlock {
                     CodeBlockView(parserResult: parsed)
+                        .padding(.bottom)
                 } else {
                     Text(parsed.attributedString)
                         .textSelection(.enabled)
