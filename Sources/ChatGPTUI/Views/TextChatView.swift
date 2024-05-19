@@ -18,6 +18,14 @@ public struct TextChatView<CustomContent: View>: View {
     
     public var body: some View {
         chatListView
+            .toolbar {
+                ToolbarItemGroup(placement: .destructiveAction) {
+                    Button("Clear", role: .destructive) {
+                        vm.clearMessages()
+                    }
+                    .disabled(vm.isPrompting)
+                }
+            }
     }
     
     var chatListView: some View {
