@@ -15,7 +15,7 @@ let package = Package(
             targets: ["ChatGPTUI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.2.0"),
+        .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.2.4"),
         .package(url: "https://github.com/apple/swift-markdown.git", from: "0.3.0"),
         .package(url: "https://github.com/alfianlosari/HighlighterSwift.git", from: "1.0.0")
     ],

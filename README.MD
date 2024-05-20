@@ -65,6 +65,8 @@ var body: some View {
 
 Make sure you are in tier that eligible for gpt4 models access. You can learn more from here [How can I access GPT-4, GPT-4 Turbo and GPT-4o?](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4-gpt-4-turbo-and-gpt-4o). 
 
+If you're not sure just pass gpt-3.5 models, by default it uses `gpt-3.5turbo`
+
 ### Voice Chat View
 
 Coming Soon!
