@@ -1,5 +1,5 @@
 {
-  "originHash" : "7cbb7c6916e47e946ab2164b614f711d435aefc3774508498ccba7933a077ae3",
+  "originHash" : "855cceff2ff2c3ef78505bf6dccb3a439abd43ed83a089da3d5b51b4ef20fd76",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfianlosari/HighlighterSwift.git",
       "state" : {
-        "branch" : "main",
-        "revision" : "6d697f875a064dda825d943fe7f6b53edea08fe8"
+        "revision" : "6d697f875a064dda825d943fe7f6b53edea08fe8",
+        "version" : "1.0.0"
       }
     },
     {
