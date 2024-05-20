@@ -16,7 +16,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.2.0"),
-        .package(url: "https://github.com/apple/swift-markdown.git", branch: "main"),
+        .package(url: "https://github.com/apple/swift-markdown.git", revision: "swift-5.10-RELEASE"),
         .package(url: "https://github.com/alfianlosari/HighlighterSwift.git", branch: "main")
     ],
     targets: [
