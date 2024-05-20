@@ -129,11 +129,7 @@ public class TextChatViewModel<CustomContent: View> {
         } catch is CancellationError {
             messageRow.responseError = "The response was cancelled"
         } catch {
-            if let errorDescription = (error as? LocalizedError)?.errorDescription {
-                messageRow.responseError = errorDescription
-            } else {
-                messageRow.responseError = (error as CustomStringConvertible).description
-            }
+            messageRow.responseError = error.localizedDescription
         }
         
         if messageRow.response == nil {
@@ -169,11 +165,7 @@ public class TextChatViewModel<CustomContent: View> {
             messageRow.response = .attributed(output)
             
         } catch {
-            if let errorDescription = (error as? LocalizedError)?.errorDescription {
-                messageRow.responseError = errorDescription
-            } else {
-                messageRow.responseError = (error as CustomStringConvertible).description
-            }
+            messageRow.responseError = error.localizedDescription
         }
         
         messageRow.isPrompting = false
