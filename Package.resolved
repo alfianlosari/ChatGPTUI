@@ -1,5 +1,5 @@
 {
-  "originHash" : "855cceff2ff2c3ef78505bf6dccb3a439abd43ed83a089da3d5b51b4ef20fd76",
+  "originHash" : "943c414f75f85cda55d8076635eb26168fe8c1e516b8df40d15a93365914129e",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -60,8 +60,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-cmark.git",
       "state" : {
-        "branch" : "gfm",
-        "revision" : "2c47322cb32cbed555f13bf5cbfaa488cc30a785"
+        "revision" : "f218e5d7691f78b55bfa39b367763f4612486c35",
+        "version" : "0.3.0"
       }
     },
     {
@@ -96,8 +96,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-markdown.git",
       "state" : {
-        "branch" : "swift-5.10-RELEASE",
-        "revision" : "d91b618fb49f2b1b93f048efb833fa6867e1ef56"
+        "revision" : "e4f95e2dc23097a1a9a1dfdfe3fe3ee44de77378",
+        "version" : "0.3.0"
       }
     },
     {
