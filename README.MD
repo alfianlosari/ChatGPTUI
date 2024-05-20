@@ -63,6 +63,8 @@ var body: some View {
 }
 ```
 
+Make sure you are in tier that eligible for gpt4 models access. You can learn more from here [How can I access GPT-4, GPT-4 Turbo and GPT-4o?](https://help.openai.com/en/articles/7102672-how-can-i-access-gpt-4-gpt-4-turbo-and-gpt-4o). 
+
 ### Voice Chat View
 
 Coming Soon!

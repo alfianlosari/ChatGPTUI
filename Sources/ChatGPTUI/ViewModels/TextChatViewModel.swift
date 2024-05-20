@@ -24,7 +24,7 @@ public class TextChatViewModel<CustomContent: View> {
     public var systemText: String
     public var temperature: Double
     
-    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
         self.messages = messages
         self.senderImage = senderImage
         self.botImage = botImage
@@ -159,7 +159,11 @@ public class TextChatViewModel<CustomContent: View> {
             messageRow.response = .attributed(output)
             
         } catch {
-            messageRow.responseError = error.localizedDescription
+            if let errorDescription = (error as? LocalizedError)?.errorDescription {
+                messageRow.responseError = errorDescription
+            } else {
+                messageRow.responseError = (error as CustomStringConvertible).description
+            }
         }
         
         messageRow.isPrompting = false
