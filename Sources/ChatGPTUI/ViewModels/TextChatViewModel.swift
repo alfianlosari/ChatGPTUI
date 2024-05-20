@@ -18,16 +18,18 @@ public class TextChatViewModel<CustomContent: View> {
     public var task: Task<Void, Never>?
     public var senderImage: String?
     public var botImage: String?
+    public var useStreaming = true
     
     let api: ChatGPTAPI
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
     
-    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, useStreaming: Bool = true, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
         self.messages = messages
         self.senderImage = senderImage
         self.botImage = botImage
+        self.useStreaming = useStreaming
         self.model = model
         self.api = ChatGPTAPI(apiKey: apiKey)
         self.systemText = systemText
@@ -39,7 +41,11 @@ public class TextChatViewModel<CustomContent: View> {
         self.task = Task {
             let text = inputMessage
             inputMessage = ""
-            await send(text: text)
+            if useStreaming {
+                await send(text: text)
+            } else {
+                await sendWithoutStream(text: text)
+            }
         }
     }
     
@@ -123,7 +129,11 @@ public class TextChatViewModel<CustomContent: View> {
         } catch is CancellationError {
             messageRow.responseError = "The response was cancelled"
         } catch {
-            messageRow.responseError = error.localizedDescription
+            if let errorDescription = (error as? LocalizedError)?.errorDescription {
+                messageRow.responseError = errorDescription
+            } else {
+                messageRow.responseError = (error as CustomStringConvertible).description
+            }
         }
         
         if messageRow.response == nil {
@@ -179,7 +189,11 @@ public class TextChatViewModel<CustomContent: View> {
                 return
             }
             self.messages.remove(at: index)
-            await send(text: message.sendText)
+            if useStreaming {
+                await send(text: message.sendText)
+            } else {
+                await sendWithoutStream(text: message.sendText)
+            }
         }
     }
     
