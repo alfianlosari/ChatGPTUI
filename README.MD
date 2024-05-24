@@ -69,4 +69,42 @@ If you're not sure just pass gpt-3.5 models, by default it uses `gpt-3.5turbo`
 
 ### Voice Chat View
 
-Coming Soon!
+Converse with ChatGPT using Voice. It uses 3 OpenAI APIs under the hood:
+- Transcribe user speech to text.
+- Prompt ChatGPT API using the text.
+- Convert text to speech (TTS) using Whisper API.
+
+‼️ You need to add key of Privacy - Microphone Usage Description in info.plist when using this otherwise your app will crash ‼️
+
+Simply initialize passing the `apiKey` in SwiftUI View
+
+```swift
+var body: some View {
+    NavigationStack {
+        VoiceChatView(apiKey: apiKey)
+            .navigationTitle("XCA ChatGPTUI")
+    }
+}
+```
+
+
+Pass these optional params for customization:
+- `Voice Type`: select voice type from `alloy` (default), `echo`, `fable`, `onyx`, `nova`, `shimmer`
+- `model` ChatGPTModel enum (gpt-4o, gpt-4turbo, gpt-3.5, etc)
+- `systemText` system text prompt used by ChatGPT.
+- `temperature` Temperature used by ChatGPT for response.
+
+```swift
+var body: some View {
+    NavigationStack {
+        VoiceChatView(
+            voiceType: .nova,
+            model: .gpt_hyphen_4o,
+            systemText: "You're master of Swift Programming",
+            temperature: 1.0,
+            apiKey: apiKey)
+            .navigationTitle("XCA ChatGPTUI")
+        
+    }
+}
+```
