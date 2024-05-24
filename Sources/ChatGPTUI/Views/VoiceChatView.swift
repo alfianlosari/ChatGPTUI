@@ -20,28 +20,29 @@ public struct VoiceChatView<CustomContent: View>: View {
         VStack(spacing: 0) {
             ScrollView {
                 if let response = vm.response {
-                    ScrollView {
-                        switch response {
-                        case .attributed(let attributedOutput):
-                            AttributedView(results: attributedOutput.results)
-                            
-                        case .rawText(let text):
-                            if !text.isEmpty {
-                                Text(text)
-                                    .multilineTextAlignment(.leading)
-                                    .textSelection(.enabled)
-                            }
-                            
-                        case .customContent(let customViewProvider):
-                            customViewProvider()
+                    switch response {
+                    case .attributed(let attributedOutput):
+                        AttributedView(results: attributedOutput.results)
+                        
+                    case .rawText(let text):
+                        if !text.isEmpty {
+                            Text(text)
+                                .multilineTextAlignment(.leading)
+                                .textSelection(.enabled)
                         }
                         
+                    case .customContent(let customViewProvider):
+                        customViewProvider()
                     }
-                    .padding(.horizontal)
-                    .listStyle(.plain)
-                    Divider()
                 }
-            }.overlay { overlayView }
+            }
+            .listStyle(.plain)
+            .padding(.horizontal)
+            .overlay { overlayView }
+            
+            if vm.response != nil {
+                Divider()
+            }
             
             HStack {
                 if case .playingSpeech = self.vm.state {
@@ -59,11 +60,6 @@ public struct VoiceChatView<CustomContent: View>: View {
                     cancelButton
                 }
             }
-            #if os(macOS)
-            .background(Color(nsColor: .controlBackgroundColor))
-            #else
-            .background(Color(uiColor: .secondarySystemBackground))
-            #endif
             .padding()
         }
     }
