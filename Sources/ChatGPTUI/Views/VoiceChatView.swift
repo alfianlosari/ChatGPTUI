@@ -36,6 +36,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                     }
                 }
             }
+            .frame(maxWidth: .infinity)
             .listStyle(.plain)
             .padding(.horizontal)
             .overlay { overlayView }
@@ -48,7 +49,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                 if case .playingSpeech = self.vm.state {
                     SiriWaveView()
                         .power(power: vm.audioPower)
-                        .frame(height: 128)
+                        .frame(height: 96)
                 }
                 
                 switch vm.state {
