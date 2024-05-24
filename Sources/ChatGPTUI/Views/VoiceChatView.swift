@@ -49,7 +49,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                 if case .playingSpeech = self.vm.state {
                     SiriWaveView()
                         .power(power: vm.audioPower)
-                        .frame(height: 96)
+                        .frame(height: 64)
                 }
                 
                 switch vm.state {
@@ -77,9 +77,9 @@ public struct VoiceChatView<CustomContent: View>: View {
             Image(systemName: loadingImageSystemName)
                 .symbolEffect(.bounce.up.byLayer, options: .repeating, value: isSymbolAnimating)
                 #if os(iOS)
-                .font(.system(size: 64))
+                .font(.system(size: 48))
                 #else
-                .font(.system(size: 128))
+                .font(.system(size: 96))
                 #endif
                 .onAppear { isSymbolAnimating = true }
                 .onDisappear { isSymbolAnimating = false }
@@ -102,10 +102,9 @@ public struct VoiceChatView<CustomContent: View>: View {
             Image(systemName: "mic.circle")
                 .symbolRenderingMode(.multicolor)
             #if os(iOS)
-                .font(.system(size: 64))
+                .font(.system(size: 48))
             #else
-                .font(.system(size: 128))
-                .padding(.bottom, 128)
+                .font(.system(size: 96))
             #endif
         }.buttonStyle(.borderless)
     }
@@ -129,7 +128,6 @@ public struct VoiceChatView<CustomContent: View>: View {
                 .foregroundStyle(.red)
                 .font(.system(size: 44))
         }.buttonStyle(.borderless)
-
     }
 }
 
