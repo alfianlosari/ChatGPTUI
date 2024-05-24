@@ -58,7 +58,13 @@ public struct VoiceChatView<CustomContent: View>: View {
                 case .processingSpeech, .playingSpeech:
                     cancelButton
                 }
-            }.padding()
+            }
+            #if os(macOS)
+            .background(Color(nsColor: .controlBackgroundColor))
+            #else
+            .background(Color(uiColor: .secondarySystemBackground))
+            #endif
+            .padding()
         }
     }
     
