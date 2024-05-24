@@ -58,7 +58,7 @@ public struct MessageRowView<CustomContent: View>: View {
         VStack(alignment: .leading) {
             switch rowType {
             case .attributed(let attributedOutput):
-                attributedView(results: attributedOutput.results)
+                AttributedView(results: attributedOutput.results)
                 
             case .rawText(let text):
                 if !text.isEmpty {
@@ -89,20 +89,7 @@ public struct MessageRowView<CustomContent: View>: View {
             }
         }
     }
-    
-    func attributedView(results: [ParserResult]) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            ForEach(results) { parsed in
-                if parsed.isCodeBlock {
-                    CodeBlockView(parserResult: parsed)
-                        .padding(.bottom)
-                } else {
-                    Text(parsed.attributedString)
-                        .textSelection(.enabled)
-                }
-            }
-        }
-    }
+ 
 }
 
 

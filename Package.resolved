@@ -38,6 +38,15 @@
       }
     },
     {
+      "identity" : "siriwaveview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/alfianlosari/SiriWaveView.git",
+      "state" : {
+        "revision" : "86e79e3f9c3089061976d3590b5459842f8610cd",
+        "version" : "1.0.0"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms",

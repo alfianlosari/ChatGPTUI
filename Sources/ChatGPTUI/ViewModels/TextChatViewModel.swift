@@ -9,7 +9,7 @@ import UIKit
 #endif
 
 @Observable
-public class TextChatViewModel<CustomContent: View> {
+open class TextChatViewModel<CustomContent: View> {
         
     public var messages: [MessageRow<CustomContent>] = []
     
