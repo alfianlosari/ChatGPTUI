@@ -77,7 +77,7 @@ public struct VoiceChatView<CustomContent: View>: View {
             Image(systemName: loadingImageSystemName)
                 .symbolEffect(.bounce.up.byLayer, options: .repeating, value: isSymbolAnimating)
                 #if os(iOS)
-                .font(.system(size: 48))
+                .font(.system(size: 64))
                 #else
                 .font(.system(size: 96))
                 #endif
@@ -102,7 +102,7 @@ public struct VoiceChatView<CustomContent: View>: View {
             Image(systemName: "mic.circle")
                 .symbolRenderingMode(.multicolor)
             #if os(iOS)
-                .font(.system(size: 48))
+                .font(.system(size: 64))
             #else
                 .font(.system(size: 96))
             #endif
