@@ -26,13 +26,6 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         state.idleResponse ?? state.playingSpeechResponse
     }
     
-    var siriWaveFormOpacity: CGFloat {
-        switch state {
-        case .recordingSpeech, .playingSpeech: return 1
-        default: return 0
-        }
-    }
-    
     var selectedVoice = VoiceType.alloy
     var audioPlayer: AVAudioPlayer!
     var audioRecorder: AVAudioRecorder!

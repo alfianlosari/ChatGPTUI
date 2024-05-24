@@ -37,6 +37,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                         }
                         
                     }
+                    .padding(.horizontal)
                     .listStyle(.plain)
                     Divider()
                 }
