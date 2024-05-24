@@ -1,10 +1,11 @@
 import Foundation
+import SwiftUI
 
-public enum VoiceChatState {
-    case idle
+public enum VoiceChatState<Content: View> {
+    case idle(ChatResponse<Content>?)
     case recordingSpeech
     case processingSpeech
-    case playingSpeech
+    case playingSpeech(ChatResponse<Content>)
     case error(Error)
     
     public var isIdle: Bool {
@@ -12,6 +13,20 @@ public enum VoiceChatState {
             return true
         }
         return false
+    }
+    
+    public var idleResponse: ChatResponse<Content>? {
+        if case .idle(let chatResponse) = self {
+            return chatResponse
+        }
+        return nil
+    }
+    
+    public var playingSpeechResponse: ChatResponse<Content>? {
+        if case .playingSpeech(let chatResponse) = self {
+            return chatResponse
+        }
+        return nil
     }
     
     public var isRecordingSpeech: Bool {

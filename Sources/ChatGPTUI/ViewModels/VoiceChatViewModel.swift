@@ -2,17 +2,28 @@ import AVFoundation
 import Foundation
 import Observation
 import ChatGPTSwift
+import SwiftUI
+
+public typealias ChatResponse = MessageRowType
 
 @Observable
-open class VoiceChatViewModel: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
+open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
         
     let api: ChatGPTAPI
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
     
-    public var state = VoiceChatState.idle {
-        didSet { print(state) }
+    public var state: VoiceChatState<CustomContent> = .idle(nil) {
+        didSet {
+            #if DEBUG
+            print(state)
+            #endif
+        }
+    }
+    
+    public var response: ChatResponse<CustomContent>? {
+        state.idleResponse ?? state.playingSpeechResponse
     }
     
     var siriWaveFormOpacity: CGFloat {
@@ -130,10 +141,15 @@ open class VoiceChatViewModel: NSObject, AVAudioRecorderDelegate, AVAudioPlayerD
                 let response = try await api.sendMessage(text: prompt, model: model, systemText: systemText, temperature: temperature)
                 try Task.checkCancellation()
                 
+                let parsingTask = ResponseParsingTask()
+                let output = await parsingTask.parse(text: response)
+                try Task.checkCancellation()
+                
                 let data = try await api.generateSpeechFrom(input: response, voice:
                         .init(rawValue: selectedVoice.rawValue) ?? .alloy)
                 try Task.checkCancellation()
-                try self.playAudio(data: data)
+                
+                try self.playAudio(data: data, response: .attributed(output))
             } catch {
                 if Task.isCancelled { return }
                 state = .error(error)
@@ -142,8 +158,8 @@ open class VoiceChatViewModel: NSObject, AVAudioRecorderDelegate, AVAudioPlayerD
         }
     }
     
-    open func playAudio(data: Data) throws {
-        self.state = .playingSpeech
+    open func playAudio(data: Data, response: ChatResponse<CustomContent>) throws {
+        self.state = .playingSpeech(response)
         audioPlayer = try AVAudioPlayer(data: data)
         audioPlayer.isMeteringEnabled = true
         audioPlayer.delegate = self
@@ -159,26 +175,28 @@ open class VoiceChatViewModel: NSObject, AVAudioRecorderDelegate, AVAudioPlayerD
     
     open func cancelRecording() {
         resetValues()
-        state = .idle
+        state = .idle(nil)
     }
     
     open func cancelProcessingTask() {
         processingSpeechTask?.cancel()
         processingSpeechTask = nil
         resetValues()
-        state = .idle
+        state = .idle(nil)
     }
     
     open func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if !flag {
             resetValues()
-            state = .idle
+            state = .idle(nil)
         }
     }
     
     open func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         resetValues()
-        state = .idle
+        if let response = self.state.playingSpeechResponse {
+            self.state = .idle(response)
+        }
     }
     
     open func resetValues() {
