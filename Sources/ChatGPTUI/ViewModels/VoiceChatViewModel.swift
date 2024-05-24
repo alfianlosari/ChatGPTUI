@@ -175,7 +175,11 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         processingSpeechTask?.cancel()
         processingSpeechTask = nil
         resetValues()
-        state = .idle(nil)
+        if case .playingSpeech(let response) = self.state {
+            state = .idle(response)
+        } else {
+            state = .idle(nil)
+        }
     }
     
     open func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
