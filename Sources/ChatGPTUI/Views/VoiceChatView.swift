@@ -8,8 +8,8 @@ public struct VoiceChatView<CustomContent: View>: View {
     @State var isSymbolAnimating = false
     var loadingImageSystemName = "circle.dotted.circle"
     
-    public init(model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) where CustomContent == Text {
-        self.vm = .init(model: model, systemText: systemText, temperature: temperature, apiKey: apiKey)
+    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) where CustomContent == Text {
+        self.vm = .init(voiceType: voiceType, model: model, systemText: systemText, temperature: temperature, apiKey: apiKey)
     }
     
     public init(customContentVM: VoiceChatViewModel<CustomContent>) {
@@ -36,10 +36,9 @@ public struct VoiceChatView<CustomContent: View>: View {
                             customViewProvider()
                         }
                         
-                        Divider().padding(.top)
                     }
                     .listStyle(.plain)
-                    
+                    Divider()
                 }
             }.overlay { overlayView }
             
@@ -47,7 +46,6 @@ public struct VoiceChatView<CustomContent: View>: View {
                 if case .playingSpeech = self.vm.state {
                     SiriWaveView()
                         .power(power: vm.audioPower)
-                        .opacity(vm.siriWaveFormOpacity)
                         .frame(height: 128)
                 }
                 
@@ -69,7 +67,6 @@ public struct VoiceChatView<CustomContent: View>: View {
         case .recordingSpeech:
             SiriWaveView()
                 .power(power: vm.audioPower)
-                .opacity(vm.siriWaveFormOpacity)
                 .frame(height: 256)
             
         case .processingSpeech:

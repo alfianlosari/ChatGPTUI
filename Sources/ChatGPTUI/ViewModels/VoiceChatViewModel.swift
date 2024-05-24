@@ -50,7 +50,8 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
             .first!.appendingPathComponent("recording.m4a")
     }
     
-    public init(model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+        self.selectedVoice = voiceType
         self.model = model
         self.systemText = systemText
         self.temperature = temperature
@@ -75,7 +76,6 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         }
         #endif
     }
-    
     
     open func startCaptureAudio() {
         resetValues()
