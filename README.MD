@@ -14,7 +14,11 @@ Simple and extensible Drop-in ChatGPT UI Solution for Apple Platforms.
 
 ### Swift Package Manager
 - File > Swift Packages > Add Package Dependency
-- Add https://github.com/alfianlosari/ChatGPTUI.git
+- Copy and paste this URL
+
+```swift
+https://github.com/alfianlosari/ChatGPTUI.git
+```
 
 ### Import
 Import to your project source file.
@@ -25,7 +29,18 @@ import ChatGPTUI
 
 ## Requirement
 
-Register for API key from [OpenAI](https://openai.com/api). Initialize with api key
+Register for API key fromx [OpenAI](https://openai.com/api). Initialize with api key
+
+### Voice Chat
+
+‼️ You need to add key of `Privacy - Microphone Usage Description` in `info.plist` when using this otherwise your app will crash ‼️
+
+### macOS Users
+
+For App Sandbox, check these checkboxes in Xcode:
+- Network Outgoing Connections (Client)
+- Hardware Audio Input (For Voice Chat)
+- Resource Access Audio Input (For Voice Chat)
 
 ## Usage
 
@@ -74,7 +89,7 @@ Converse with ChatGPT using Voice. It uses 3 OpenAI APIs under the hood:
 - Prompt ChatGPT API using the text.
 - Convert text to speech (TTS) using Whisper API.
 
-‼️ You need to add key of Privacy - Microphone Usage Description in info.plist when using this otherwise your app will crash ‼️
+‼️ You need to add key of `Privacy - Microphone Usage Description` in `info.plist` when using this otherwise your app will crash ‼️
 
 Simply initialize passing the `apiKey` in SwiftUI View
 
