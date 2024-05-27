@@ -18,7 +18,7 @@ let package = Package(
         .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.2.5"),
         .package(url: "https://github.com/apple/swift-markdown.git", from: "0.3.0"),
         .package(url: "https://github.com/alfianlosari/HighlighterSwift.git", from: "1.0.0"),
-        .package(url: "https://github.com/alfianlosari/SiriWaveView.git", from: "2.0.0")
+        .package(url: "https://github.com/alfianlosari/SiriWaveView.git", from: "1.0.0")
     ],
     targets: [
         .target(
