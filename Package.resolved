@@ -1,5 +1,5 @@
 {
-  "originHash" : "09655282d28e0265757d41b00b62aa5a1c48de9cbf44624fed64c5c2aa5d6b3e",
+  "originHash" : "5496902526aa46a521e7ee0d34670c3f665783a37c322e23bef1003479766c28",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfianlosari/ChatGPTSwift.git",
       "state" : {
-        "revision" : "01a4736119b5ce8725182a8a842d3da62f589f2d",
-        "version" : "2.2.4"
+        "revision" : "eaaec98632c3a722695768c80335951d3a3b6c6a",
+        "version" : "2.2.5"
       }
     },
     {
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfianlosari/SiriWaveView.git",
       "state" : {
-        "revision" : "86e79e3f9c3089061976d3590b5459842f8610cd",
-        "version" : "1.0.0"
+        "revision" : "3fd4cac6855d4da105a8e354f6713f117956f87e",
+        "version" : "2.0.0"
       }
     },
     {
