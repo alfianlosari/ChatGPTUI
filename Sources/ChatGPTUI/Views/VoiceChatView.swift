@@ -47,7 +47,8 @@ public struct VoiceChatView<CustomContent: View>: View {
             
             HStack {
                 if case .playingSpeech = self.vm.state {
-                    SiriWaveView(power: $vm.audioPower)
+                    SiriWaveView()
+                        .power(power: vm.audioPower)
                         .frame(height: 64)
                 }
                 
@@ -68,7 +69,8 @@ public struct VoiceChatView<CustomContent: View>: View {
     var overlayView: some View {
         switch vm.state {
         case .recordingSpeech:
-            SiriWaveView(power: $vm.audioPower)
+            SiriWaveView()
+                .power(power: vm.audioPower)
                 .frame(height: 256)
             
         case .processingSpeech:
