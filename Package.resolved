@@ -1,5 +1,5 @@
 {
-  "originHash" : "059341db1edbdf782be5f93d9445db2e8a92330efe22e3ce993da79741c9aa42",
+  "originHash" : "51ed7ea331aea83343645d6dc32e6073d4a0478df108efc7368bb1601074bbbf",
   "pins" : [
     {
       "identity" : "async-http-client",
@@ -42,8 +42,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/alfianlosari/SiriWaveView.git",
       "state" : {
-        "revision" : "86e79e3f9c3089061976d3590b5459842f8610cd",
-        "version" : "1.0.0"
+        "revision" : "711287cd8d6ef16b5dbcced5ead82d93d0cb3c88",
+        "version" : "1.1.0"
       }
     },
     {
