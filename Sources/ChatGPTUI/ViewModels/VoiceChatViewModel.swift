@@ -158,12 +158,9 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         audioPlayer.delegate = self
         audioPlayer.play()
         
-        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true, block: { [unowned self]_ in
-            guard self.audioPlayer != nil else { return }
-            self.audioPlayer.updateMeters()
-            let power = min(1, max(0, 1 - abs(Double(self.audioPlayer.averagePower(forChannel: 0)) / 160) ))
-            self.audioPower = power
-        })
+        // Scheduled timer interval cause wave view to not updated when scrolling as audio plays
+        // Use GCD after with recursion until further cleaner solution can be found
+        self.scheduleAudioPlayerPowerUpdate()
     }
     
     open func cancelRecording() {
@@ -193,6 +190,16 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         resetValues()
         if let response = self.state.playingSpeechResponse {
             self.state = .idle(response)
+        }
+    }
+    
+    func scheduleAudioPlayerPowerUpdate() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            guard let audioPlayer = self.audioPlayer else { return }
+            audioPlayer.updateMeters()
+            let power = min(1, max(0, 1 - abs(Double(audioPlayer.averagePower(forChannel: 0)) / 160) ))
+            self.audioPower = power
+            self.scheduleAudioPlayerPowerUpdate()
         }
     }
     
