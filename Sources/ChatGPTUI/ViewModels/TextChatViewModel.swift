@@ -20,7 +20,7 @@ open class TextChatViewModel<CustomContent: View> {
     public var botImage: String?
     public var useStreaming = true
     
-    let api: ChatGPTAPI
+    public let api: ChatGPTAPI
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
