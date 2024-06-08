@@ -9,7 +9,7 @@ public typealias ChatResponse = MessageRowType
 @Observable
 open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDelegate, AVAudioPlayerDelegate {
         
-    let api: ChatGPTAPI
+    public let api: ChatGPTAPI
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
