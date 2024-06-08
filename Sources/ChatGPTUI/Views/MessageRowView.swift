@@ -68,7 +68,7 @@ public struct MessageRowView<CustomContent: View>: View {
                 }
                 
             case .customContent(let customViewProvider):
-                customViewProvider()
+                customViewProvider(message.id)
             }
                         
             if let error = responseError {
