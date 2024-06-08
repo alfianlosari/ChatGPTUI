@@ -26,7 +26,7 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
         state.idleResponse ?? state.playingSpeechResponse
     }
     
-    var selectedVoice = VoiceType.alloy
+    public var selectedVoice = VoiceType.alloy
     var audioPlayer: AVAudioPlayer!
     var audioRecorder: AVAudioRecorder!
     #if !os(macOS)
