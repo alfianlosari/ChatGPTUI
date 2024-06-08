@@ -32,7 +32,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                         }
                         
                     case .customContent(let customViewProvider):
-                        customViewProvider(nil)
+                        customViewProvider()
                     }
                 }
             }

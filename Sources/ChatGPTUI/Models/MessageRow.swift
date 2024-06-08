@@ -33,7 +33,7 @@ public struct MessageRow<CustomContent: View>: Identifiable {
 public enum MessageRowType<CustomContent: View> {
     case attributed(AttributedOutput)
     case rawText(String)
-    case customContent((_ id: UUID?) -> CustomContent)
+    case customContent(() -> CustomContent)
     
     public var text: String {
         switch self {
