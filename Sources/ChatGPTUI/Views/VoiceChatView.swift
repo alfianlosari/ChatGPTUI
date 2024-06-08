@@ -36,8 +36,8 @@ public struct VoiceChatView<CustomContent: View>: View {
                     }
                 }
             }
+            .contentMargins(.top, 16, for: .scrollContent)
             .frame(maxWidth: .infinity)
-            .listStyle(.plain)
             .padding(.horizontal)
             .overlay { overlayView }
             
