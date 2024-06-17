@@ -9,8 +9,8 @@ public struct TextChatView<CustomContent: View>: View {
     @State var vm: TextChatViewModel<CustomContent>
     @FocusState var isTextFieldFocused: Bool
     
-    public init(senderImage: String? = nil, botImage: String? = nil, useStreaming: Bool = true, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) where CustomContent == Text {
-        self.vm = .init(senderImage: senderImage, botImage: botImage, useStreaming: useStreaming, model: model, systemText: systemText, temperature: temperature, apiKey: apiKey)
+    public init(senderImage: String? = nil, botImage: String? = nil, useStreaming: Bool = true, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, renderAsMarkdown: Bool = true, apiKey: String) where CustomContent == Text {
+        self.vm = .init(senderImage: senderImage, botImage: botImage, useStreaming: useStreaming, model: model, systemText: systemText, temperature: temperature, renderAsMarkdown: renderAsMarkdown, apiKey: apiKey)
     }
     
     public init(customContentVM: TextChatViewModel<CustomContent>) {

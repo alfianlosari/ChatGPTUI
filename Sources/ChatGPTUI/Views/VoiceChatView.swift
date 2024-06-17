@@ -8,8 +8,8 @@ public struct VoiceChatView<CustomContent: View>: View {
     @State var isSymbolAnimating = false
     var loadingImageSystemName = "circle.dotted.circle"
     
-    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) where CustomContent == Text {
-        self.vm = .init(voiceType: voiceType, model: model, systemText: systemText, temperature: temperature, apiKey: apiKey)
+    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, renderAsMarkdown: Bool = true, apiKey: String) where CustomContent == Text {
+        self.vm = .init(voiceType: voiceType, model: model, systemText: systemText, temperature: temperature, renderAsMarkdown: renderAsMarkdown, apiKey: apiKey)
     }
     
     public init(customContentVM: VoiceChatViewModel<CustomContent>) {
@@ -36,7 +36,7 @@ public struct VoiceChatView<CustomContent: View>: View {
                     }
                 }
             }
-            .contentMargins(.top, 16, for: .scrollContent)
+            .contentMargins(.vertical, 16, for: .scrollContent)
             .frame(maxWidth: .infinity)
             .padding(.horizontal)
             .overlay { overlayView }

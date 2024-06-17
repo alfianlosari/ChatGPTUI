@@ -13,6 +13,7 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
+    public var renderAsMarkdown = true
     
     public var state: VoiceChatState<CustomContent> = .idle(nil) {
         didSet {
@@ -43,11 +44,12 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
             .first!.appendingPathComponent("recording.m4a")
     }
     
-    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+    public init(voiceType: VoiceType = .alloy, model: ChatGPTModel = .gpt_hyphen_4o, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, renderAsMarkdown: Bool = true, apiKey: String) {
         self.selectedVoice = voiceType
         self.model = model
         self.systemText = systemText
         self.temperature = temperature
+        self.renderAsMarkdown = renderAsMarkdown
         self.api = ChatGPTAPI(apiKey: apiKey)
         super.init()
         #if !os(macOS)
@@ -134,15 +136,18 @@ open class VoiceChatViewModel<CustomContent: View>: NSObject, AVAudioRecorderDel
                 let response = try await api.sendMessage(text: prompt, model: model, systemText: systemText, temperature: temperature)
                 try Task.checkCancellation()
                 
-                let parsingTask = ResponseParsingTask()
-                let output = await parsingTask.parse(text: response)
-                try Task.checkCancellation()
-                
                 let data = try await api.generateSpeechFrom(input: response, voice:
                         .init(rawValue: selectedVoice.rawValue) ?? .alloy)
                 try Task.checkCancellation()
                 
-                try self.playAudio(data: data, response: .attributed(output))
+                if self.renderAsMarkdown {
+                    let parsingTask = ResponseParsingTask()
+                    let output = await parsingTask.parse(text: response)
+                    try Task.checkCancellation()
+                    try self.playAudio(data: data, response: .attributed(output))
+                } else {
+                    try self.playAudio(data: data, response: .rawText(response))
+                }
             } catch {
                 if Task.isCancelled { return }
                 state = .error(error)

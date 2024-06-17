@@ -19,13 +19,14 @@ open class TextChatViewModel<CustomContent: View> {
     public var senderImage: String?
     public var botImage: String?
     public var useStreaming = true
+    public var renderAsMarkdown = true
     
     public let api: ChatGPTAPI
     public var model: ChatGPTModel
     public var systemText: String
     public var temperature: Double
     
-    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, useStreaming: Bool = true, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, apiKey: String) {
+    public init(messages: [MessageRow<CustomContent>] = [], senderImage: String? = nil, botImage: String? = nil, useStreaming: Bool = true, model: ChatGPTModel = .gpt_hyphen_3_period_5_hyphen_turbo, systemText: String = "You're a helpful assistant", temperature: Double = 0.6, renderAsMarkdown: Bool = true, apiKey: String) {
         self.messages = messages
         self.senderImage = senderImage
         self.botImage = botImage
@@ -33,6 +34,7 @@ open class TextChatViewModel<CustomContent: View> {
         self.model = model
         self.api = ChatGPTAPI(apiKey: apiKey)
         self.systemText = systemText
+        self.renderAsMarkdown = renderAsMarkdown
         self.temperature = temperature
     }
     
@@ -76,9 +78,13 @@ open class TextChatViewModel<CustomContent: View> {
         var streamText = ""
         do {
             let parsingTask = ResponseParsingTask()
-            let attributedSend = await parsingTask.parse(text: text)
-            try Task.checkCancellation()
-            messageRow.send = .attributed(attributedSend)
+            if renderAsMarkdown {
+                let attributedSend = await parsingTask.parse(text: text)
+                try Task.checkCancellation()
+                messageRow.send = .attributed(attributedSend)
+            } else {
+                messageRow.send = .rawText(text)
+            }
             
             self.messages.append(messageRow)
             let parserThresholdTextCount = 64
@@ -88,42 +94,48 @@ open class TextChatViewModel<CustomContent: View> {
             let stream = try await api.sendMessageStream(text: text, model: model, systemText: systemText, temperature: temperature)
             for try await text in stream {
                 streamText += text
-                currentTextCount += text.count
-                
-                if currentTextCount >= parserThresholdTextCount || text.contains("```") {
-                    currentOutput = await parsingTask.parse(text: streamText)
-                    try Task.checkCancellation()
-                    currentTextCount = 0
-                }
-
-                if let currentOutput = currentOutput, !currentOutput.results.isEmpty {
-                    let suffixText = streamText.trimmingPrefix(currentOutput.string)
-                    var results = currentOutput.results
-                    let lastResult = results[results.count - 1]
-                    var lastAttrString = lastResult.attributedString
-                    if lastResult.isCodeBlock {
-                        #if os(macOS)
-                        lastAttrString.append(AttributedString(String(suffixText), attributes: .init([.font: NSFont.systemFont(ofSize: 12).apply(newTraits: .monoSpace), .foregroundColor: NSColor.white])))
-                        #else
-                        lastAttrString.append(AttributedString(String(suffixText), attributes: .init([.font: UIFont.systemFont(ofSize: 12).apply(newTraits: .traitMonoSpace), .foregroundColor: UIColor.white])))
-                        #endif
-                        
-                    } else {
-                        lastAttrString.append(AttributedString(String(suffixText)))
+                if renderAsMarkdown {
+                    currentTextCount += text.count
+                    
+                    if currentTextCount >= parserThresholdTextCount || text.contains("```") {
+                        currentOutput = await parsingTask.parse(text: streamText)
+                        try Task.checkCancellation()
+                        currentTextCount = 0
                     }
-                    results[results.count - 1] = ParserResult(attributedString: lastAttrString, isCodeBlock: lastResult.isCodeBlock, codeBlockLanguage: lastResult.codeBlockLanguage)
-                    messageRow.response = .attributed(.init(string: streamText, results: results))
-                } else {
-                    messageRow.response = .attributed(.init(string: streamText, results: [
-                        ParserResult(attributedString: AttributedString(stringLiteral: streamText), isCodeBlock: false, codeBlockLanguage: nil)
-                    ]))
-                }
 
+                    if let currentOutput = currentOutput, !currentOutput.results.isEmpty {
+                        let suffixText = streamText.trimmingPrefix(currentOutput.string)
+                        var results = currentOutput.results
+                        let lastResult = results[results.count - 1]
+                        var lastAttrString = lastResult.attributedString
+                        if lastResult.isCodeBlock {
+                            #if os(macOS)
+                            lastAttrString.append(AttributedString(String(suffixText), attributes: .init([.font: NSFont.systemFont(ofSize: 12).apply(newTraits: .monoSpace), .foregroundColor: NSColor.white])))
+                            #else
+                            lastAttrString.append(AttributedString(String(suffixText), attributes: .init([.font: UIFont.systemFont(ofSize: 12).apply(newTraits: .traitMonoSpace), .foregroundColor: UIColor.white])))
+                            #endif
+                            
+                        } else {
+                            lastAttrString.append(AttributedString(String(suffixText)))
+                        }
+                        results[results.count - 1] = ParserResult(attributedString: lastAttrString, isCodeBlock: lastResult.isCodeBlock, codeBlockLanguage: lastResult.codeBlockLanguage)
+                        messageRow.response = .attributed(.init(string: streamText, results: results))
+                    } else {
+                        messageRow.response = .attributed(.init(string: streamText, results: [
+                            ParserResult(attributedString: AttributedString(stringLiteral: streamText), isCodeBlock: false, codeBlockLanguage: nil)
+                        ]))
+                    }
+                    
+                } else {
+                    messageRow.response = .rawText(streamText)
+                }
                 self.messages[self.messages.count - 1] = messageRow
-                if let currentString = currentOutput?.string, currentString != streamText {
-                    let output = await parsingTask.parse(text: streamText)
-                    try Task.checkCancellation()
-                    messageRow.response = .attributed(output)
+                if renderAsMarkdown {
+                    if let currentString = currentOutput?.string, currentString != streamText {
+                        let output = await parsingTask.parse(text: streamText)
+                        try Task.checkCancellation()
+                        messageRow.response = .attributed(output)
+                    }
                 }
             }
         } catch is CancellationError {
@@ -158,12 +170,14 @@ open class TextChatViewModel<CustomContent: View> {
             let responseText = try await api.sendMessage(text: text, model: model, systemText: systemText, temperature: temperature)
             try Task.checkCancellation()
             
-            let parsingTask = ResponseParsingTask()
-            let output = await parsingTask.parse(text: responseText)
-            try Task.checkCancellation()
-            
-            messageRow.response = .attributed(output)
-            
+            if renderAsMarkdown {
+                let parsingTask = ResponseParsingTask()
+                let output = await parsingTask.parse(text: responseText)
+                try Task.checkCancellation()
+                messageRow.response = .attributed(output)
+            } else {
+                messageRow.response = .rawText(responseText)
+            }
         } catch {
             messageRow.responseError = error.localizedDescription
         }
