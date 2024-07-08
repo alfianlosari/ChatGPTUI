@@ -1,4 +1,4 @@
-// swift-tools-version: 5.10
+// swift-tools-version: 5.9
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -15,8 +15,8 @@ let package = Package(
             targets: ["ChatGPTUI"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.3.1"),
-        .package(url: "https://github.com/apple/swift-markdown.git", from: "0.3.0"),
+        .package(url: "https://github.com/alfianlosari/ChatGPTSwift.git", from: "2.3.2"),
+        .package(url: "https://github.com/apple/swift-markdown.git", from: "0.4.0"),
         .package(url: "https://github.com/alfianlosari/HighlighterSwift.git", from: "1.0.0"),
         .package(url: "https://github.com/alfianlosari/SiriWaveView.git", from: "1.1.0")
     ],
